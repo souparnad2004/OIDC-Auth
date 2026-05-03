@@ -335,3 +335,7 @@ export async function saveConsent({
     granted_at: new Date(),
   });
 }
+
+export async function getAllClients() {
+  return await db.select().from(clients);
+}

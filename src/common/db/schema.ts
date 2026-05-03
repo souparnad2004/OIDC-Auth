@@ -11,7 +11,7 @@ export const users = pgTable("users", {
     role: roleEnum().default("user").notNull(),
     is_verified: boolean().default(false),
     created_at: timestamp({withTimezone: true}).defaultNow(),
-    updated_at: timestamp({withTimezone: true}).defaultNow().$onUpdate(() => new Date())
+    updated_at: timestamp({withTimezone: true}).defaultNow().$onUpdate(() => new Date()),
 })
 
 export const clients = pgTable("clients", {
@@ -21,6 +21,7 @@ export const clients = pgTable("clients", {
     client_secret_hash: text(),
     redirect_uris: text().array().notNull(),
     is_confidential: boolean().default(true),
+    allowed_origins: text().array(),
     created_at: timestamp({withTimezone: true}).defaultNow(),
     updated_at: timestamp({withTimezone: true}).defaultNow().$onUpdate(() => new Date())
 })
