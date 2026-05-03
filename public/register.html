@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class="card">
+      <h2>Create Account</h2>
+
+      <form id="registerForm">
+        <label>Name</label>
+        <input type="text" id="name" placeholder="Enter name" required />
+
+        <label>Email</label>
+        <input type="email" id="email" placeholder="Enter email" required />
+
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Enter password" required />
+
+        <button type="submit">Register</button>
+      </form>
+
+      <div id="result" class="result" style="display: none"></div>
+
+      <p class="footer">
+        Already have an account?
+        <a href="/login.html">Login</a>
+      </p>
+    </div>
+
+    <script type="module">
+      const form = document.getElementById("registerForm");
+      const resultBox = document.getElementById("result");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+          const res = await fetch("http://localhost:8000/api/auth/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ name, email, password }),
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            throw new Error(data.message || "Registration failed");
+          }
+
+          resultBox.style.display = "block";
+          resultBox.innerHTML = `
+      <strong>Registered Successfully ✅</strong><br>
+      Please check your email to verify your account.
+    `;
+
+          form.reset();
+        } catch (err) {
+          resultBox.style.display = "block";
+          resultBox.innerHTML = `<span>${err.message}</span>`;
+        }
+      });
+    </script>
+  </body>
+</html>

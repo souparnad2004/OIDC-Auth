@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+
+  <link rel="stylesheet" href="/style.css"/>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Welcome Back</h2>
+
+    <form id="loginForm">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="Enter email" required />
+
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Enter password" required />
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div id="result" class="result" style="display:none;"></div>
+
+    <p class="footer">
+      Don't have an account?
+      <a href="/register.html">Register</a>
+    </p>
+  </div>
+
+ <script>
+  const form = document.getElementById("loginForm");
+  const resultBox = document.getElementById("result");
+
+  const params = new URLSearchParams(window.location.search);
+  const returnTo = params.get("returnTo"); // IMPORTANT
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const button = form.querySelector("button");
+
+    try {
+      button.disabled = true;
+      button.innerText = "Logging in...";
+
+      const res = await fetch("http://localhost:8000/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      // store tokens (if you still use localStorage flow)
+      if (data?.data?.accessToken) {
+        localStorage.setItem("accessToken", data.data.accessToken);
+      }
+
+      if (data?.data?.refreshToken) {
+        localStorage.setItem("refreshToken", data.data.refreshToken);
+      }
+
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `<strong>Login Successful ✅</strong><br>Redirecting...`;
+
+      setTimeout(() => {
+        // 🔥 CRITICAL: go back to OIDC flow
+        if (returnTo) {
+          window.location.href = returnTo;
+        } else {
+          window.location.href = "/";
+        }
+      }, 800);
+
+    } catch (err) {
+      resultBox.style.display = "block";
+      resultBox.innerHTML = `<span>${err.message}</span>`;
+    } finally {
+      button.disabled = false;
+      button.innerText = "Login";
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1777531870670,
+      "tag": "0000_tiny_swarm",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1777537866750,
+      "tag": "0001_wakeful_vector",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1777549473370,
+      "tag": "0002_magenta_shen",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1777551184683,
+      "tag": "0003_soft_doctor_spectrum",
+      "breakpoints": true
+    }
+  ]
+}
