@@ -126,6 +126,7 @@
   </div>
 
   <script>
+    const ISSUER = "https://oidc-auth-pfvc.onrender.com"
     const form = document.getElementById("form");
     const resultBox = document.getElementById("result");
 
@@ -146,7 +147,7 @@
       }
 
       try {
-        const res = await fetch("http://localhost:8000/api/oauth/registration", {
+        const res = await fetch(`${ISSUER}/api/oauth/registration`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

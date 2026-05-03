@@ -31,6 +31,7 @@
   </div>
 
  <script>
+  const ISSUER = "https://oidc-auth-pfvc.onrender.com"
   const form = document.getElementById("loginForm");
   const resultBox = document.getElementById("result");
 
@@ -49,7 +50,7 @@
       button.disabled = true;
       button.innerText = "Logging in...";
 
-      const res = await fetch("http://localhost:8000/api/auth/login", {
+      const res = await fetch(`${ISSUER}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
