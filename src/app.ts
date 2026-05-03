@@ -16,22 +16,8 @@ export const createApp = () => {
   app.use(cookieParser());
   app.use(
     cors({
-      origin: async function (origin, callback) {
-        if (!origin) return callback(null, true);
-
-        const clients = await getAllClients(); // or cache this
-
-        const allowed = clients.some((client) =>
-          client.allowed_origins?.includes(origin),
-        );
-
-        if (allowed) {
-          callback(null, true);
-        } else {
-          callback(new Error("Not allowed by CORS"));
-        }
-      },
-      credentials: true,
+      origin: "https://oidc-auth-pfvc.onrender.com/",
+      credentials: true
     }),
   );
 
